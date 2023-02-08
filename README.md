@@ -12,3 +12,11 @@ Untuk memulai menggunakan YII 2 Advanced, silahkan gunakan composer untuk mengin
 ```
 composer create-project --prefer-dist yiisoft/yii2-app-advanced <nama projek>
 ```
+
+## Install Kartik Widget
+
+Ekstension ini untuk mempermudahkan dalam development.
+
+```
+composer require kartik-v/yii2-widgets "*"
+```
