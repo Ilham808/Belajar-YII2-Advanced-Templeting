@@ -1,4 +1,4 @@
-## Instalasi
+## Persyaratan
 
 Persyaratan untuk menggunakan YII 2:
 - PHP versi 5 keatas
