@@ -9,5 +9,16 @@ return [
         'cache' => [
             'class' => \yii\caching\FileCache::class,
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager', // only support DbManager
+        ],
+    ],
+    'modules' => [
+        'gii' => [
+            'class' => 'yii\gii\Module',
+        ],
+        'mimin' => [
+            'class' => '\hscstudio\mimin\Module',
+        ],
     ],
 ];
