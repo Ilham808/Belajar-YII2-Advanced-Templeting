@@ -16,6 +16,11 @@ return [
     'modules' => [
         'gii' => [
             'class' => 'yii\gii\Module',
+            'generators' => [
+                'crud'   => [
+                    'class' => 'common\generators\Generator',
+                ]
+            ]
         ],
         'mimin' => [
             'class' => '\hscstudio\mimin\Module',
