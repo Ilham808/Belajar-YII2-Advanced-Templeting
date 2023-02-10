@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "113ff38718acb4871f668454a7db42cd",
+    "content-hash": "516218a7a40f1d723fcde83bc5f9bc58",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -26,7 +26,7 @@
             "version": "3.3.11",
             "source": {
                 "type": "git",
-                "url": "https://github.com/RobinHerbots/Inputmask.git",
+                "url": "git@github.com:RobinHerbots/Inputmask.git",
                 "reference": "5e670ad62f50c738388d4dcec78d2888505ad77b"
             },
             "dist": {
@@ -47,7 +47,7 @@
             "version": "3.6.3",
             "source": {
                 "type": "git",
-                "url": "git@github.com:jquery/jquery-dist.git",
+                "url": "https://github.com/jquery/jquery-dist.git",
                 "reference": "da0f228131a578aea168b799fe4d7fe01764c98b"
             },
             "dist": {
@@ -1392,21 +1392,22 @@
         },
         {
             "name": "kartik-v/yii2-widget-sidenav",
-            "version": "v1.0.1",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-sidenav.git",
-                "reference": "87e9c815624aa966d70bb4507b3d53c158db0d43"
+                "reference": "5d3276503d224f73c34f1010d6bc6dd4e936c50f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-sidenav/zipball/87e9c815624aa966d70bb4507b3d53c158db0d43",
-                "reference": "87e9c815624aa966d70bb4507b3d53c158db0d43",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-sidenav/zipball/5d3276503d224f73c34f1010d6bc6dd4e936c50f",
+                "reference": "5d3276503d224f73c34f1010d6bc6dd4e936c50f",
                 "shasum": ""
             },
             "require": {
-                "kartik-v/yii2-krajee-base": "*"
+                "kartik-v/yii2-krajee-base": ">=3.0.0"
             },
+            "default-branch": true,
             "type": "yii2-extension",
             "extra": {
                 "branch-alias": {
@@ -1444,7 +1445,7 @@
             ],
             "support": {
                 "issues": "https://github.com/kartik-v/yii2-widget-sidenav/issues",
-                "source": "https://github.com/kartik-v/yii2-widget-sidenav/tree/v1.0.1"
+                "source": "https://github.com/kartik-v/yii2-widget-sidenav/tree/master"
             },
             "funding": [
                 {
@@ -1452,7 +1453,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2021-04-08T17:49:26+00:00"
+            "time": "2021-09-07T07:35:25+00:00"
         },
         {
             "name": "kartik-v/yii2-widget-spinner",
@@ -3826,22 +3827,22 @@
         },
         {
             "name": "codeception/verify",
-            "version": "2.2.0",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Codeception/Verify.git",
-                "reference": "5fc4c9675c82e11e0f04801da00a99b2493d5408"
+                "reference": "2f8f5ce6ea1be5c011f77eb7f1ca0c9f4d551513"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codeception/Verify/zipball/5fc4c9675c82e11e0f04801da00a99b2493d5408",
-                "reference": "5fc4c9675c82e11e0f04801da00a99b2493d5408",
+                "url": "https://api.github.com/repos/Codeception/Verify/zipball/2f8f5ce6ea1be5c011f77eb7f1ca0c9f4d551513",
+                "reference": "2f8f5ce6ea1be5c011f77eb7f1ca0c9f4d551513",
                 "shasum": ""
             },
             "require": {
                 "ext-dom": "*",
                 "php": "^7.4 || ^8.0",
-                "phpunit/phpunit": "^9.3"
+                "phpunit/phpunit": "^9.5"
             },
             "type": "library",
             "autoload": {
@@ -3869,9 +3870,9 @@
             "description": "BDD assertion library for PHPUnit",
             "support": {
                 "issues": "https://github.com/Codeception/Verify/issues",
-                "source": "https://github.com/Codeception/Verify/tree/2.2.0"
+                "source": "https://github.com/Codeception/Verify/tree/2.3.0"
             },
-            "time": "2021-11-21T23:53:33+00:00"
+            "time": "2023-02-09T07:21:39+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -7006,7 +7007,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "kartik-v/yii2-widget-sidenav": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
