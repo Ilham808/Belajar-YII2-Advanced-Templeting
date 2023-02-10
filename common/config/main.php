@@ -25,5 +25,12 @@ return [
         'mimin' => [
             'class' => '\hscstudio\mimin\Module',
         ],
-    ],
+        'gridview' =>  [
+            'class' => \kartik\grid\Module::class,
+        'bsVersion' => '4.x', // or '3.x'
+        // 'downloadAction' => 'gridview/export/download',
+        // 'i18n' => [],
+        // 'exportEncryptSalt' => 'tG85vd1',
+    ] 
+],
 ];

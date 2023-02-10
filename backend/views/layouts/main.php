@@ -196,7 +196,7 @@ AppAsset::register($this);
                     <?= Breadcrumbs::widget([
                         'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
                     ]) ?>
-                    <h1 class="mb-0 fw-bold">Starter Page</h1> 
+                    <h1 class="mb-0 fw-bold"></h1> 
                 </div>
             </div>
         </div>
@@ -210,20 +210,20 @@ AppAsset::register($this);
             <!-- ============================================================== -->
             <!-- Start Page Content -->
             <!-- ============================================================== -->
-            <div class="row">
-                <div class="col-12">
-                    <?= Alert::widget() ?>
-                    <?= $content ?>
-                </div>
-            </div>
+
+            <?= Alert::widget() ?>
+            <?= $content ?>
+
         </div>
     </div>
     <!-- ============================================================== -->
     <!-- End Page wrapper  -->
     <!-- ============================================================== -->
 </div>
+<br>
+<br>
 <footer class="footer text-center">
-   &copy;   <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?> <?= Yii::powered() ?></a>.
+ &copy;   <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?> <?= Yii::powered() ?></a>.
 </footer>
 
 <?php $this->endBody() ?>
