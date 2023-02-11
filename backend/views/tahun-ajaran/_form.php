@@ -4,19 +4,15 @@ use yii\helpers\Url;
 use yii\bootstrap4\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Guru */
+/* @var $model common\models\RefTahunAjaran */
 /* @var $form yii\widgets\ActiveForm */
 ?>
- 
-<div class="guru-form">
+
+<div class="ref-tahun-ajaran-form">
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'nama_guru')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($modelUser, 'email')->label('Email') ?>
-    <hr>
-    <?= $form->field($modelUser, 'username')->textInput()->label('Username') ?>
-    <?= $form->field($modelUser, 'password')->passwordInput()->label('Password') ?>
+    <?= $form->field($model, 'tahun_ajaran')->textInput(['maxlength' => true]) ?>
 
   
 	<?php if (!Yii::$app->request->isAjax){ ?>
