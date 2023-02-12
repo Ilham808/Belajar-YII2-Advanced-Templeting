@@ -14,6 +14,7 @@ use yii\widgets\DetailView;
             'mata_pelajaran',
             'refTingkatKelas.tingkat_kelas',
             'refJurusan.jurusan',
+            'guruMataPelajaran.guru.nama_guru'
         ],
     ]) ?>
     </div>

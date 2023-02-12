@@ -105,7 +105,7 @@ class TahunAjaranController extends Controller
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> "Tambah RefTahunAjaran",
-                    'content'=>'<span class="text-success">Create RefTahunAjaran berhasil</span>',
+                    'content'=>'<span class="text-success">Create Tahun Ajaran berhasil</span>',
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                             Html::a('Tambah Lagi',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
         

@@ -57,4 +57,9 @@ class MataPelajaran extends \yii\db\ActiveRecord
     {
         return $this->hasOne(RefTingkatKelas::className(), ['id' => 'id_tingkat_kelas']);
     }
+
+    public function getGuruMataPelajaran()
+    {
+        return $this->hasOne(GuruMataPelajaran::className(), ['id_mata_pelajaran' => 'id']);
+    }
 }

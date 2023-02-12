@@ -16,23 +16,19 @@ return [
     // ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'refTahunAjaran.tahun_ajaran',
+        'attribute'=>'nama',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'nama_kelas',
+        'attribute'=>'alamat',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'refTingkatKelas.tingkat_kelas',
+        'attribute'=>'no_hp',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'guru.nama_guru',
-    ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'refJurusan.jurusan',
+        'attribute'=>'refStatusWali.status_wali',
     ],
     [
         'class' => 'kartik\grid\ActionColumn',

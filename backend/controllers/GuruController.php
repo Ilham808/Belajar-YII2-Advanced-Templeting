@@ -83,13 +83,13 @@ class GuruController extends Controller
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
-     */
+     */ 
     public function actionCreate()
     {
         $request = Yii::$app->request;
         $model = new Guru();  
         $modelUser = new BuatAkun();
-
+        
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -179,7 +179,7 @@ class GuruController extends Controller
                         'modelUser' => $modelUser
                     ]);
                 }
-                
+
             } else {
                 return $this->render('create', [
                     'model' => $model,

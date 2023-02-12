@@ -58,4 +58,9 @@ class Siswa extends \yii\db\ActiveRecord
             'id_user' => 'Id User',
         ];
     }
+
+    public function getKelas()
+    {
+        return $this->hasOne(Kelas::className(), ['id' => 'id_kelas']);
+    }
 }

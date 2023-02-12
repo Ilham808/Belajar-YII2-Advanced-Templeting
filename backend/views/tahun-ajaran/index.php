@@ -39,7 +39,7 @@ CrudAsset::register($this);
                             'toolbar'=> [
                                 ['content'=>
                                     Html::a('<i class="fas fa-redo"></i> ', [''],
-                                    ['data-pjax'=>1, 'class'=>'btn btn-default', 'title'=>'Reset Grid']).
+                                    ['data-pjax'=>1, 'class'=>'btn btn-primary', 'title'=>'Reset Grid']).
                                     '{toggleData}'
                                     // .'{export}'
                                 ],
@@ -49,9 +49,9 @@ CrudAsset::register($this);
                             'responsive' => true,          
                             'panel' => [
                                 // 'type' => 'primary', 
-                                // 'heading' => '<i class="glyphicon glyphicon-list"></i> Ref Tahun Ajarans listing',
+                                'heading' => '<i class="glyphicon glyphicon-list"></i> Tahun Ajarans listing',
                                 'before'=>Html::a('Tambah', ['create'],
-                                    ['role'=>'modal-remote','title'=> 'Create new Ref Tahun Ajarans','class'=>'btn btn-default']),
+                                    ['role'=>'modal-remote','title'=> 'Create new Ref Tahun Ajarans','class'=>'btn btn-primary']),
                                 // 'after'=>BulkButtonWidget::widget([
                                 //             'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp; Delete All',
                                 //                 ["bulk-delete"] ,

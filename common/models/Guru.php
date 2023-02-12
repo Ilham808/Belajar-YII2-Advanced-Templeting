@@ -45,4 +45,10 @@ class Guru extends \yii\db\ActiveRecord
             'id_user' => 'Id User',
         ];
     }
+
+    public function getGuruMataPelajaran()
+    {
+        return $this->hasOne(GuruMataPelajaran::className(), ['id_guru' => 'id']);
+    }
+
 }

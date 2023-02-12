@@ -44,4 +44,9 @@ class GuruMataPelajaran extends \yii\db\ActiveRecord
             'id_mata_pelajaran' => 'Id Mata Pelajaran',
         ];
     }
+
+    public function getGuru()
+    {
+        return $this->hasOne(Guru::className(), ['id' => 'id_guru']);
+    }
 }

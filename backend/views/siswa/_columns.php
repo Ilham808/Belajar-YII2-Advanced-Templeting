@@ -16,24 +16,32 @@ return [
     // ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'refTahunAjaran.tahun_ajaran',
+        'attribute'=>'nis',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'nama_kelas',
+        'attribute'=>'nama',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'refTingkatKelas.tingkat_kelas',
+        'attribute'=>'tempat_lahir',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'guru.nama_guru',
+        'attribute'=>'tanggal_lahir',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'refJurusan.jurusan',
+        'attribute'=>'alamat',
     ],
+    // [
+        // 'class'=>'\kartik\grid\DataColumn',
+        // 'attribute'=>'id_kelas',
+    // ],
+    // [
+        // 'class'=>'\kartik\grid\DataColumn',
+        // 'attribute'=>'id_user',
+    // ],
     [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,

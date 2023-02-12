@@ -3,12 +3,9 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\MataPelajaran;
-use common\models\RefJurusan;
-use common\models\RefTingkatKelas;
-use common\models\Guru;
-use common\models\GuruMataPelajaran;
-use backend\models\SearchMataPelajaran;
+use common\models\Wali;
+use common\models\RefStatusWali;
+use backend\models\SearchWali;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -18,9 +15,9 @@ use yii\helpers\ArrayHelper;
 
 
 /**
- * MataPelajaranController implements the CRUD actions for MataPelajaran model.
+ * WaliController implements the CRUD actions for Wali model.
  */
-class MataPelajaranController extends Controller
+class WaliController extends Controller
 {
     /**
      * @inheritdoc
@@ -39,12 +36,12 @@ class MataPelajaranController extends Controller
     }
 
     /**
-     * Lists all MataPelajaran models.
+     * Lists all Wali models.
      * @return mixed
      */
     public function actionIndex()
     {    
-        $searchModel = new SearchMataPelajaran();
+        $searchModel = new SearchWali();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -55,25 +52,23 @@ class MataPelajaranController extends Controller
 
 
     /**
-     * Displays a single MataPelajaran model.
+     * Displays a single Wali model.
      * @param integer $id
      * @return mixed
      */
     public function actionView($id)
     {   
-        $model = $this->findModel($id);
-        
         $request = Yii::$app->request;
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                'title'=> "MataPelajaran ",
-                'content'=>$this->renderAjax('view', [
-                    'model' => $model
-                ]),
-                'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                Html::a('Ubah',['update','id' => $id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-            ];    
+                    'title'=> "Wali ",
+                    'content'=>$this->renderAjax('view', [
+                        'model' => $this->findModel($id),
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                            Html::a('Ubah',['update','id' => $id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                ];    
         }else{
             return $this->render('view', [
                 'model' => $this->findModel($id),
@@ -82,7 +77,7 @@ class MataPelajaranController extends Controller
     }
 
     /**
-     * Creates a new MataPelajaran model.
+     * Creates a new Wali model.
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -90,11 +85,8 @@ class MataPelajaranController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new MataPelajaran();  
-        $jurusan = RefJurusan::find()->all();
-        $tingkatKelas = RefTingkatKelas::find()->all();
-        $guru = Guru::find()->all();
-        $guruMataPelajaran = new GuruMataPelajaran();
+        $model = new Wali();  
+        $wali = RefStatusWali::find()->all();
 
         if($request->isAjax){
             /*
@@ -103,49 +95,34 @@ class MataPelajaranController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Tambah MataPelajaran",
+                    'title'=> "Tambah Wali",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
-                        'jurusan' => $jurusan,
-                        'tingkatKelas' => $tingkatKelas,
-                        'guru' => $guru,
-                        'guruMataPelajaran' =>  $guruMataPelajaran
+                        'wali' => $wali
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
-
+                                Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+        
                 ];         
             }else if($model->load($request->post()) && $model->save()){
-                $idMataPelajaran = Yii::$app->db->getLastInsertID();
-                $dataPost = $request->post();
-                $idGuru = $dataPost['GuruMataPelajaran']['id_guru'];
-
-                $createMataPelajaran = new GuruMataPelajaran;
-                $createMataPelajaran->id_guru = $idGuru;
-                $createMataPelajaran->id_mata_pelajaran = $idMataPelajaran;
-                $createMataPelajaran->save();
-
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Tambah MataPelajaran",
-                    'content'=>'<span class="text-success">Create MataPelajaran berhasil</span>',
+                    'title'=> "Tambah Wali",
+                    'content'=>'<span class="text-success">Create Wali berhasil</span>',
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                    Html::a('Tambah Lagi',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
-
+                            Html::a('Tambah Lagi',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+        
                 ];         
             }else{           
                 return [
-                    'title'=> "Tambah MataPelajaran",
+                    'title'=> "Tambah Wali",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
-                        'jurusan' => $jurusan,
-                        'tingkatKelas' => $tingkatKelas,
-                        'guru' => $guru,
-                        'guruMataPelajaran' =>  $guruMataPelajaran
+                        'wali' => $wali
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
-
+                                Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+        
                 ];         
             }
         }else{
@@ -153,30 +130,18 @@ class MataPelajaranController extends Controller
             *   Process for non-ajax request
             */
             if ($model->load($request->post()) && $model->save()) {
-                $idMataPelajaran = Yii::$app->db->getLastInsertID();
-                $dataPost = $request->post();
-                $idGuru = $dataPost['GuruMataPelajaran']['id_guru'];
-
-                $createMataPelajaran = new GuruMataPelajaran;
-                $createMataPelajaran->id_guru = $idGuru;
-                $createMataPelajaran->id_mata_pelajaran = $idMataPelajaran;
-                $createMataPelajaran->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
                     'model' => $model,
-                    'jurusan' => $jurusan,
-                    'tingkatKelas' => $tingkatKelas,
-                    'guru' => $guru,
-                    'guruMataPelajaran' =>  $guruMataPelajaran
                 ]);
             }
         }
-
+       
     }
 
     /**
-     * Updates an existing MataPelajaran model.
+     * Updates an existing Wali model.
      * For ajax request will return json object
      * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -186,12 +151,7 @@ class MataPelajaranController extends Controller
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);       
-        $jurusan = RefJurusan::find()->all();
-        $tingkatKelas = RefTingkatKelas::find()->all();
-        $guru = Guru::find()->all();
-        $guruMataPelajaran = GuruMataPelajaran::find()->where(['id_mata_pelajaran'=>$model->id])->one();
-
-
+        $wali = RefStatusWali::find()->all();
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -199,76 +159,52 @@ class MataPelajaranController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Ubah MataPelajaran",
+                    'title'=> "Ubah Wali",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
-                        'jurusan' => $jurusan,
-                        'tingkatKelas' => $tingkatKelas,
-                        'guru' => $guru,
-                        'guruMataPelajaran' =>  $guruMataPelajaran
+                        'wali' => $wali
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+                                Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
                 ];         
             }else if($model->load($request->post()) && $model->save()){
-                $dataPost = $request->post();
-                $idGuru = $dataPost['GuruMataPelajaran']['id_guru'];
-
-                $guruMataPelajaran->id_guru = $idGuru;
-                $guruMataPelajaran->id_mata_pelajaran = $model->id;
-                $guruMataPelajaran->save();
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "MataPelajaran ",
+                    'title'=> "Wali ",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
-                        'jurusan' => $jurusan,
-                        'tingkatKelas' => $tingkatKelas,
-                        'guru' => $guru,
-                        'guruMataPelajaran' =>  $guruMataPelajaran
+                        'wali' => $wali
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                    Html::a('Ubah',['update', 'id' => $model->id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                            Html::a('Ubah',['update', 'id' => $model->id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
-               return [
-                'title'=> "Ubah MataPelajaran ",
-                'content'=>$this->renderAjax('update', [
-                    'model' => $model,
-                    'jurusan' => $jurusan,
-                    'tingkatKelas' => $tingkatKelas,
-                    'guru' => $guru,
-                    'guruMataPelajaran' =>  $guruMataPelajaran
-                ]),
-                'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
-            ];        
-        }
-    }else{
+                 return [
+                    'title'=> "Ubah Wali ",
+                    'content'=>$this->renderAjax('update', [
+                        'model' => $model,
+                        'wali' => $wali
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                                Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+                ];        
+            }
+        }else{
             /*
             *   Process for non-ajax request
             */
             if ($model->load($request->post()) && $model->save()) {
-                $dataPost = $request->post();
-                $idGuru = $dataPost['GuruMataPelajaran']['id_guru'];
-                
-                $guruMataPelajaran->id_guru = $idGuru;
-                $guruMataPelajaran->id_mata_pelajaran = $model->id;
-                $guruMataPelajaran->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [
                     'model' => $model,
-                    'jurusan' => $jurusan,
-                    'tingkatKelas' => $tingkatKelas,
-                    'guru' => $guru
                 ]);
             }
         }
     }
 
     /**
-     * Delete an existing MataPelajaran model.
+     * Delete an existing Wali model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -296,14 +232,14 @@ class MataPelajaranController extends Controller
     }
 
      /**
-     * Delete multiple existing MataPelajaran model.
+     * Delete multiple existing Wali model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
-     public function actionBulkdelete()
-     {        
+    public function actionBulkdelete()
+    {        
         $request = Yii::$app->request;
         $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
         foreach ( $pks as $pk ) {
@@ -323,19 +259,19 @@ class MataPelajaranController extends Controller
             */
             return $this->redirect(['index']);
         }
-
+       
     }
 
     /**
-     * Finds the MataPelajaran model based on its primary key value.
+     * Finds the Wali model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return MataPelajaran the loaded model
+     * @return Wali the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = MataPelajaran::findOne($id)) !== null) {
+        if (($model = Wali::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

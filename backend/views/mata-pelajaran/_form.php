@@ -30,6 +30,14 @@ use yii\helpers\ArrayHelper;
 	)->label('Jurusan');
 	?>
 
+	<?php 
+	$dataGuru=ArrayHelper::map($guru,'id','nama_guru');
+	echo $form->field($guruMataPelajaran, 'id_guru')->dropDownList(
+		$dataGuru,
+		['prompt'=>'- Pilih Salah Satu -']
+	)->label('Guru Pengampu');
+	?>
+
 
 	<?php if (!Yii::$app->request->isAjax){ ?>
 		<div class="form-group">
