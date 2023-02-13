@@ -7,26 +7,26 @@ $params = array_merge(
 );
 
 return [
-    'id' => 'app-backend',
+    'id' => 'app-siswa',
     'basePath' => dirname(__DIR__),
-    'controllerNamespace' => 'backend\controllers',
+    'controllerNamespace' => 'siswa\controllers',
     'bootstrap' => ['log'],
     'modules' => [],
     'components' => [
         'request' => [
-            'csrfParam' => '_csrf-backend',
+            'csrfParam' => '_csrf-siswa',
             'class' => 'common\components\Request',
-            'web' => '/backend/web',
-            'adminUrl' => '/backend'
+            'web' => '/siswa/web',
+            'adminUrl' => '/siswa'
         ],
         'user' => [
             'identityClass' => 'common\models\User',
             'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+            'identityCookie' => ['name' => '_identity-siswa', 'httpOnly' => true],
         ],
         'session' => [
-            // this is the name of the session cookie used for login on the backend
-            'name' => 'advanced-backend',
+            // this is the name of the session cookie used for login on the siswa
+            'name' => 'advanced-siswa',
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
