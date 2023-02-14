@@ -6,8 +6,6 @@ use Yii;
 use common\models\MataPelajaran;
 use common\models\RefJurusan;
 use common\models\RefTingkatKelas;
-use common\models\Guru;
-use common\models\GuruMataPelajaran;
 use backend\models\SearchMataPelajaran;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -93,8 +91,6 @@ class MataPelajaranController extends Controller
         $model = new MataPelajaran();  
         $jurusan = RefJurusan::find()->all();
         $tingkatKelas = RefTingkatKelas::find()->all();
-        $guru = Guru::find()->all();
-        $guruMataPelajaran = new GuruMataPelajaran();
 
         if($request->isAjax){
             /*
@@ -108,22 +104,12 @@ class MataPelajaranController extends Controller
                         'model' => $model,
                         'jurusan' => $jurusan,
                         'tingkatKelas' => $tingkatKelas,
-                        'guru' => $guru,
-                        'guruMataPelajaran' =>  $guruMataPelajaran
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
 
                 ];         
             }else if($model->load($request->post()) && $model->save()){
-                $idMataPelajaran = Yii::$app->db->getLastInsertID();
-                $dataPost = $request->post();
-                $idGuru = $dataPost['GuruMataPelajaran']['id_guru'];
-
-                $createMataPelajaran = new GuruMataPelajaran;
-                $createMataPelajaran->id_guru = $idGuru;
-                $createMataPelajaran->id_mata_pelajaran = $idMataPelajaran;
-                $createMataPelajaran->save();
 
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
@@ -139,9 +125,7 @@ class MataPelajaranController extends Controller
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
                         'jurusan' => $jurusan,
-                        'tingkatKelas' => $tingkatKelas,
-                        'guru' => $guru,
-                        'guruMataPelajaran' =>  $guruMataPelajaran
+                        'tingkatKelas' => $tingkatKelas
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -153,22 +137,12 @@ class MataPelajaranController extends Controller
             *   Process for non-ajax request
             */
             if ($model->load($request->post()) && $model->save()) {
-                $idMataPelajaran = Yii::$app->db->getLastInsertID();
-                $dataPost = $request->post();
-                $idGuru = $dataPost['GuruMataPelajaran']['id_guru'];
-
-                $createMataPelajaran = new GuruMataPelajaran;
-                $createMataPelajaran->id_guru = $idGuru;
-                $createMataPelajaran->id_mata_pelajaran = $idMataPelajaran;
-                $createMataPelajaran->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [
                     'model' => $model,
                     'jurusan' => $jurusan,
                     'tingkatKelas' => $tingkatKelas,
-                    'guru' => $guru,
-                    'guruMataPelajaran' =>  $guruMataPelajaran
                 ]);
             }
         }
@@ -188,8 +162,6 @@ class MataPelajaranController extends Controller
         $model = $this->findModel($id);       
         $jurusan = RefJurusan::find()->all();
         $tingkatKelas = RefTingkatKelas::find()->all();
-        $guru = Guru::find()->all();
-        $guruMataPelajaran = GuruMataPelajaran::find()->where(['id_mata_pelajaran'=>$model->id])->one();
 
 
         if($request->isAjax){
@@ -204,19 +176,11 @@ class MataPelajaranController extends Controller
                         'model' => $model,
                         'jurusan' => $jurusan,
                         'tingkatKelas' => $tingkatKelas,
-                        'guru' => $guru,
-                        'guruMataPelajaran' =>  $guruMataPelajaran
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
                 ];         
             }else if($model->load($request->post()) && $model->save()){
-                $dataPost = $request->post();
-                $idGuru = $dataPost['GuruMataPelajaran']['id_guru'];
-
-                $guruMataPelajaran->id_guru = $idGuru;
-                $guruMataPelajaran->id_mata_pelajaran = $model->id;
-                $guruMataPelajaran->save();
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> "MataPelajaran ",
@@ -224,8 +188,6 @@ class MataPelajaranController extends Controller
                         'model' => $model,
                         'jurusan' => $jurusan,
                         'tingkatKelas' => $tingkatKelas,
-                        'guru' => $guru,
-                        'guruMataPelajaran' =>  $guruMataPelajaran
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::a('Ubah',['update', 'id' => $model->id],['class'=>'btn btn-primary','role'=>'modal-remote'])
@@ -237,8 +199,6 @@ class MataPelajaranController extends Controller
                     'model' => $model,
                     'jurusan' => $jurusan,
                     'tingkatKelas' => $tingkatKelas,
-                    'guru' => $guru,
-                    'guruMataPelajaran' =>  $guruMataPelajaran
                 ]),
                 'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                 Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -249,12 +209,6 @@ class MataPelajaranController extends Controller
             *   Process for non-ajax request
             */
             if ($model->load($request->post()) && $model->save()) {
-                $dataPost = $request->post();
-                $idGuru = $dataPost['GuruMataPelajaran']['id_guru'];
-                
-                $guruMataPelajaran->id_guru = $idGuru;
-                $guruMataPelajaran->id_mata_pelajaran = $model->id;
-                $guruMataPelajaran->save();
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('update', [

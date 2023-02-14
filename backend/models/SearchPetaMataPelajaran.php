@@ -5,12 +5,12 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Wali;
+use common\models\MataPelajaran;
 
 /**
- * SearchWali represents the model behind the search form about `common\models\Wali`.
+ * SearchPetaMataPelajaran represents the model behind the search form about `common\models\MataPelajaran`.
  */
-class SearchWali extends Wali
+class SearchPetaMataPelajaran extends MataPelajaran
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class SearchWali extends Wali
     public function rules()
     {
         return [
-            [['id', 'id_status_wali'], 'integer'],
-            [['nama', 'alamat', 'no_hp'], 'safe'],
+            [['id', 'id_tingkat_kelas', 'id_jurusan'], 'integer'],
+            [['mata_pelajaran'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class SearchWali extends Wali
      */
     public function search($params)
     {
-        $query = Wali::find();
+        $query = MataPelajaran::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -57,12 +57,11 @@ class SearchWali extends Wali
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'id_status_wali' => $this->id_status_wali,
+            'id_tingkat_kelas' => $this->id_tingkat_kelas,
+            'id_jurusan' => $this->id_jurusan,
         ]);
 
-        $query->andFilterWhere(['like', 'nama', $this->nama])
-            ->andFilterWhere(['like', 'alamat', $this->alamat])
-            ->andFilterWhere(['like', 'no_hp', $this->no_hp]);
+        $query->andFilterWhere(['like', 'mata_pelajaran', $this->mata_pelajaran]);
 
         return $dataProvider;
     }

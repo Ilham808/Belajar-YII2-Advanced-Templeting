@@ -1,5 +1,5 @@
 <?php 
-
+use yii\bootstrap5\Html;
 use yii\widgets\Menu;
 
 echo Menu::widget(
@@ -47,6 +47,20 @@ echo Menu::widget(
                 </a>',
                 'options' => [
                 	'class' => 'sidebar-item'
+                ],
+                'active' => Yii::$app->request->url === Yii::$app->homeUrl
+            ],
+            [
+                'template' => '<span>'
+                . Html::beginForm(['/site/logout'], 'post', ['class' => 'form-inline'])
+                . Html::submitButton(
+                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    ['class' => 'sidebar-link waves-effect waves-dark sidebar-link logout']
+                )
+                . Html::endForm()
+                . '<span/>',
+                'options' => [
+                    'class' => 'sidebar-item'
                 ],
                 'active' => Yii::$app->request->url === Yii::$app->homeUrl
             ],

@@ -1,5 +1,5 @@
 <?php 
-
+use yii\bootstrap5\Html;
 use yii\widgets\Menu;
 
 echo Menu::widget(
@@ -15,26 +15,6 @@ echo Menu::widget(
                 </a>',
                 'options' => [
                 	'class' => 'sidebar-item'
-                ],
-                'active' => Yii::$app->request->url === Yii::$app->homeUrl
-            ],
-            [
-                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/backend/tahun-ajaran/index" aria-expanded="false">
-                <i class="mdi mdi-calendar"></i>
-                <span class="hide-menu">Tahun Ajaran</span>
-                </a>',
-                'options' => [
-                	'class' => 'sidebar-item'
-                ],
-                'active' => Yii::$app->request->url === Yii::$app->homeUrl
-            ],
-            [
-                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/backend/wali/index" aria-expanded="false">
-                <i class="mdi mdi-account-network"></i>
-                <span class="hide-menu">Wali</span>
-                </a>',
-                'options' => [
-                    'class' => 'sidebar-item'
                 ],
                 'active' => Yii::$app->request->url === Yii::$app->homeUrl
             ],
@@ -69,6 +49,16 @@ echo Menu::widget(
                 'active' => Yii::$app->request->url === Yii::$app->homeUrl
             ],
             [
+                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/backend/peta-mata-pelajaran/index" aria-expanded="false">
+                <i class="mdi mdi-account-multiple"></i>
+                <span class="hide-menu">Mata Pelajaran Guru</span>
+                </a>',
+                'options' => [
+                    'class' => 'sidebar-item'
+                ],
+                'active' => Yii::$app->request->url === Yii::$app->homeUrl
+            ],
+            [
                 'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/backend/siswa/index" aria-expanded="false">
                 <i class="mdi mdi-account-multiple"></i>
                 <span class="hide-menu">Siswa</span>
@@ -77,7 +67,21 @@ echo Menu::widget(
                     'class' => 'sidebar-item'
                 ],
                 'active' => Yii::$app->request->url === Yii::$app->homeUrl
-            ]
+            ],
+            [
+                'template' => '<span>'
+                . Html::beginForm(['/site/logout'], 'post', ['class' => 'form-inline'])
+                . Html::submitButton(
+                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    ['class' => 'sidebar-link waves-effect waves-dark sidebar-link logout']
+                )
+                . Html::endForm()
+                . '<span/>',
+                'options' => [
+                    'class' => 'sidebar-item'
+                ],
+                'active' => Yii::$app->request->url === Yii::$app->homeUrl
+            ],
         ]
     ]
 );

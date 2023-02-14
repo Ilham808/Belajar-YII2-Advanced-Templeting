@@ -3,12 +3,10 @@
 namespace backend\controllers;
 
 use Yii;
-use common\models\Siswa;
-use common\models\Kelas;
-use common\models\User;
-use common\models\AuthAssignment;
-use backend\models\BuatAkun;
-use backend\models\SearchSiswa;
+use common\models\MataPelajaran;
+use common\models\Guru;
+use common\models\GuruMataPelajaran;
+use backend\models\SearchPetaMataPelajaran;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -18,9 +16,9 @@ use yii\helpers\ArrayHelper;
 
 
 /**
- * SiswaController implements the CRUD actions for Siswa model.
+ * PetaMataPelajaranController implements the CRUD actions for MataPelajaran model.
  */
-class SiswaController extends Controller
+class PetaMataPelajaranController extends Controller
 {
     /**
      * @inheritdoc
@@ -39,12 +37,12 @@ class SiswaController extends Controller
     }
 
     /**
-     * Lists all Siswa models.
+     * Lists all MataPelajaran models.
      * @return mixed
      */
     public function actionIndex()
     {    
-        $searchModel = new SearchSiswa();
+        $searchModel = new SearchPetaMataPelajaran();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -55,7 +53,7 @@ class SiswaController extends Controller
 
 
     /**
-     * Displays a single Siswa model.
+     * Displays a single MataPelajaran model.
      * @param integer $id
      * @return mixed
      */
@@ -65,7 +63,7 @@ class SiswaController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                'title'=> "Siswa ",
+                'title'=> "MataPelajaran ",
                 'content'=>$this->renderAjax('view', [
                     'model' => $this->findModel($id),
                 ]),
@@ -79,86 +77,164 @@ class SiswaController extends Controller
         }
     }
 
+    public function actionDetailGuru($id)
+    {
+        $request = Yii::$app->request;
+        $model = GuruMataPelajaran::find()->where(['id_mata_pelajaran' => $id])->all();
+
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'title' => "Detail Guru Pengajar",
+                'content' => $this->renderAjax('detail-guru', [
+                    'model' => $model
+                ]),
+                'footer' => Html::button('Tutup', ['class' => 'btn btn-default float-left', 'data-dismiss' => "modal"])
+            ];
+        } else {
+            return $this->render('detail-guru', [
+                'model' => $model
+            ]);
+        }
+    }
+
     /**
-     * Creates a new Siswa model.
+     * Creates a new MataPelajaran model.
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
+    public function actionAddGuru($id)
+    {
+        $request = Yii::$app->request;
+        $model = new GuruMataPelajaran();
+        $dataGuru = Guru::find()->all();  
+
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+
+            if($request->isGet){
+                return [
+                    'title'=> "Tambah Guru",
+                    'content'=>$this->renderAjax('create-guru', [
+                        'model' => $model,
+                        'guru' => $dataGuru,
+                        'id' => $id
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+
+                ];         
+            }else if($request->post()){
+
+                $dataPost = $request->post();
+                foreach ($dataPost['GuruMataPelajaran']['id_guru'] as $key => $value) {
+                    $cekGuru = GuruMataPelajaran::find()->where(['id_mata_pelajaran' => $id, 'id_guru' => $value ])->exists();
+                    if ($cekGuru == FALSE) {
+                        $createDb = new GuruMataPelajaran();
+                        $createDb->id_guru = $value;
+                        $createDb->id_mata_pelajaran = $id;
+                        $createDb->save();
+                    }
+                }
+                $dataGuruNew = GuruMataPelajaran::find()->where(['id_mata_pelajaran' => $id])->all();
+                return [
+                    'title' => "Detail Guru Pengajar",
+                    'content' => $this->renderAjax('detail-guru', [
+                        'model' => $dataGuruNew
+                    ]),
+                    'footer' => Html::button('Tutup', ['class' => 'btn btn-default float-left', 'data-dismiss' => "modal"])
+                ];        
+            }else{           
+                return [
+                    'title'=> "Tambah Guru",
+                    'content'=>$this->renderAjax('create-guru', [
+                        'model' => $model,
+                        'guru' => $dataGuru,
+                        'id' => $id
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+
+                ];         
+            }
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            if ($request->post()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create-guru', [
+                    'model' => $model,
+                    'guru' => $dataGuru,
+                    'id' => $id
+                ]);
+            }
+        }
+
+    }
+
+    public function actionDeleteGuru($id, $id_guru)
+    {
+        $request = Yii::$app->request;
+        GuruMataPelajaran::find()->where(['id_mata_pelajaran' => $id, 'id_guru' => $id_guru ])->one()->delete();
+
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            $dataGuruNew = GuruMataPelajaran::find()->where(['id_mata_pelajaran' => $id])->all();
+            return [
+                'title' => "Detail Guru Pengajar",
+                'content' => $this->renderAjax('detail-guru', [
+                    'model' => $dataGuruNew
+                ]),
+                'footer' => Html::button('Tutup', ['class' => 'btn btn-default float-left', 'data-dismiss' => "modal"])
+            ];
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            return $this->redirect(['index']);
+        }
+    }
+
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new Siswa();  
-        $modelUser = new BuatAkun();
-        $kelas = Kelas::find()->all();
+        $model = new MataPelajaran();  
 
-        if($request->isAjax){ 
+        if($request->isAjax){
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Tambah Siswa",
+                    'title'=> "Tambah MataPelajaran",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
-                        'modelUser' => $modelUser,
-                        'kelas' => $kelas
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
 
                 ];         
-            }else if($modelUser->load($request->post()) && $modelUser->signup()){
-                $lastInsertedId = Yii::$app->db->getLastInsertID();
-
-                if ($model->load($request->post()) ) {
-
-                    $dataPost = $request->post();
-
-                    $createSiswa = new Siswa;
-                    $createSiswa->nis = $dataPost['Siswa']['nis'];
-                    $createSiswa->nama = $dataPost['Siswa']['nama'];
-                    $createSiswa->tempat_lahir = $dataPost['Siswa']['tempat_lahir'];
-                    $createSiswa->tanggal_lahir = $dataPost['tanggal_lahir'];
-                    $createSiswa->alamat = $dataPost['Siswa']['alamat'];
-                    $createSiswa->id_kelas = $dataPost['Siswa']['id_kelas'];
-                    $createSiswa->id_user = $lastInsertedId;
-                    $createSiswa->save();
-
-                    $modelAuth = new AuthAssignment;
-                    $modelAuth->item_name = 'Siswa';
-                    $modelAuth->user_id = $lastInsertedId;
-                    $modelAuth->save();
-
-                }else{
-                    return [
-                        'title'=> "Tambah Siswa",
-                        'content'=>$this->renderAjax('create', [
-                            'model' => $model,
-                            'modelUser' => $modelUser,
-                            'kelas' => $kelas
-                        ]),
-                        'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                        Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
-
-                    ];   
-                }
+            }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Tambah Siswa",
-                    'content'=>'<span class="text-success">Create Siswa berhasil</span>',
+                    'title'=> "Tambah MataPelajaran",
+                    'content'=>'<span class="text-success">Create MataPelajaran berhasil</span>',
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::a('Tambah Lagi',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
 
                 ];         
             }else{           
                 return [
-                    'title'=> "Tambah Siswa",
+                    'title'=> "Tambah MataPelajaran",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
-                        'modelUser' => $modelUser,
-                        'kelas' => $kelas
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -181,7 +257,7 @@ class SiswaController extends Controller
     }
 
     /**
-     * Updates an existing Siswa model.
+     * Updates an existing MataPelajaran model.
      * For ajax request will return json object
      * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -191,8 +267,7 @@ class SiswaController extends Controller
     {
         $request = Yii::$app->request;
         $model = $this->findModel($id);       
-        $modelUser = User::find()->where(['id' => $model->id_user])->one(); 
-        $kelas = Kelas::find()->all();
+
         if($request->isAjax){
             /*
             *   Process for ajax request
@@ -200,11 +275,9 @@ class SiswaController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Ubah Siswa",
+                    'title'=> "Ubah MataPelajaran",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
-                        'modelUser' => $modelUser,
-                        'kelas' => $kelas
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -212,22 +285,18 @@ class SiswaController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Siswa ",
+                    'title'=> "MataPelajaran ",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
-                        'modelUser' => $modelUser,
-                        'kelas' => $kelas
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::a('Ubah',['update', 'id' => $model->id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
                return [
-                'title'=> "Ubah Siswa ",
+                'title'=> "Ubah MataPelajaran ",
                 'content'=>$this->renderAjax('update', [
                     'model' => $model,
-                    'modelUser' => $modelUser,
-                    'kelas' => $kelas
                 ]),
                 'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                 Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -242,15 +311,13 @@ class SiswaController extends Controller
             } else {
                 return $this->render('update', [
                     'model' => $model,
-                    'modelUser' => $modelUser,
-                    'kelas' => $kelas
                 ]);
             }
         }
     }
 
     /**
-     * Delete an existing Siswa model.
+     * Delete an existing MataPelajaran model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -278,7 +345,7 @@ class SiswaController extends Controller
     }
 
      /**
-     * Delete multiple existing Siswa model.
+     * Delete multiple existing MataPelajaran model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -309,15 +376,15 @@ class SiswaController extends Controller
     }
 
     /**
-     * Finds the Siswa model based on its primary key value.
+     * Finds the MataPelajaran model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Siswa the loaded model
+     * @return MataPelajaran the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Siswa::findOne($id)) !== null) {
+        if (($model = MataPelajaran::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

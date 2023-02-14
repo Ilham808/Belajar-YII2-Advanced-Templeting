@@ -7,10 +7,10 @@ use yii\helpers\Html;
 /* @var $model common\models\MataPelajaran */
 
 ?>
-<div class="mata-pelajaran-create">
-    <?= $this->render('_form', [
+<div class="guru-create">
+    <?= $this->render('_guru', [
         'model' => $model,
-        'jurusan' => $jurusan,
-        'tingkatKelas' => $tingkatKelas,
+        'guru' => $guru,
+        'id' => $id
     ]) ?>
 </div>
