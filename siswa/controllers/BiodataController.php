@@ -21,7 +21,7 @@ class BiodataController extends \yii\web\Controller
 
     public function actionUpdate($nis)
     {
-        $model = Siswa::find()->where(['nis' => $nis])->one();;
+        $model = Siswa::find()->where(['nis' => $nis])->one();
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect('index');

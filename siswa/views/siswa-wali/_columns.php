@@ -16,26 +16,26 @@ return [
     // ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'nama',
+        'attribute'=>'wali.refStatusWali.status_wali',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'alamat',
+        'attribute'=>'wali.nama',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'no_hp',
+        'attribute'=>'wali.no_hp',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'id_status_wali',
+        'attribute'=>'wali.alamat',
     ],
     [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',
         'urlCreator' => function($action, $model, $key, $index) { 
-                return Url::to([$action, 'id' => $model->id]);
+                return Url::to([$action, 'id' => $model->id_wali]);
         },
         'viewOptions'=>['role'=>'modal-remote','title'=>'Lihat','data-toggle'=>'tooltip'],
         'updateOptions'=>['role'=>'modal-remote','title'=>'Ubah', 'data-toggle'=>'tooltip'],

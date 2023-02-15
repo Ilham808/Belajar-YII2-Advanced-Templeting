@@ -7,10 +7,10 @@ use johnitvn\ajaxcrud\CrudAsset;
 use johnitvn\ajaxcrud\BulkButtonWidget;
 
 /* @var $this yii\web\View */
-/* @var $searchModel siswa\models\SearchWali */
+/* @var $searchModel siswa\models\SearchSiswaWali */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Walis';
+$this->title = 'Siswa Walis';
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
@@ -49,9 +49,9 @@ CrudAsset::register($this);
                             'responsive' => true,          
                             'panel' => [
                                 // 'type' => 'primary', 
-                                // 'heading' => '<i class="glyphicon glyphicon-list"></i> Walis listing',
+                                // 'heading' => '<i class="glyphicon glyphicon-list"></i> Siswa Walis listing',
                                 'before'=>Html::a('Tambah', ['create'],
-                                    ['role'=>'modal-remote','title'=> 'Create new Walis','class'=>'btn btn-primary']),
+                                    ['role'=>'modal-remote','title'=> 'Create new Siswa Walis','class'=>'btn btn-primary']),
                                 // 'after'=>BulkButtonWidget::widget([
                                 //             'buttons'=>Html::a('<i class="glyphicon glyphicon-trash"></i>&nbsp; Delete All',
                                 //                 ["bulk-delete"] ,

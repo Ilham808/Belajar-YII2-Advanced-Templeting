@@ -2,13 +2,14 @@
 
 use yii\helpers\Html;
 
-
 /* @var $this yii\web\View */
-/* @var $model common\models\Wali */
-
+/* @var $model common\models\SiswaWali */
 ?>
-<div class="wali-create">
+<div class="siswa-wali-update">
+
     <?= $this->render('_form', [
         'model' => $model,
+        'statusWali' => $statusWali,
     ]) ?>
+
 </div>

@@ -5,12 +5,12 @@ namespace siswa\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Wali;
+use common\models\SiswaWali;
 
 /**
- * SearchWali represents the model behind the search form about `common\models\Wali`.
+ * SearchSiswaWali represents the model behind the search form about `common\models\SiswaWali`.
  */
-class SearchWali extends Wali
+class SearchSiswaWali extends SiswaWali
 {
     /**
      * @inheritdoc
@@ -18,8 +18,7 @@ class SearchWali extends Wali
     public function rules()
     {
         return [
-            [['id', 'id_status_wali'], 'integer'],
-            [['nama', 'alamat', 'no_hp'], 'safe'],
+            [['id', 'id_siswa', 'id_wali'], 'integer'],
         ];
     }
 
@@ -41,7 +40,7 @@ class SearchWali extends Wali
      */
     public function search($params)
     {
-        $query = Wali::find();
+        $query = SiswaWali::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -57,12 +56,9 @@ class SearchWali extends Wali
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'id_status_wali' => $this->id_status_wali,
+            'id_siswa' => $this->id_siswa,
+            'id_wali' => $this->id_wali,
         ]);
-
-        $query->andFilterWhere(['like', 'nama', $this->nama])
-            ->andFilterWhere(['like', 'alamat', $this->alamat])
-            ->andFilterWhere(['like', 'no_hp', $this->no_hp]);
 
         return $dataProvider;
     }

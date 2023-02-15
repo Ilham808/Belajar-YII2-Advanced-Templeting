@@ -4,6 +4,7 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Siswa;
+use common\models\SiswaRwKelas;
 use common\models\Kelas;
 use common\models\User;
 use common\models\AuthAssignment;
@@ -116,7 +117,7 @@ class SiswaController extends Controller
 
                     $dataPost = $request->post();
 
-                    $createSiswa = new Siswa;
+                    $createSiswa = new Siswa();
                     $createSiswa->nis = $dataPost['Siswa']['nis'];
                     $createSiswa->nama = $dataPost['Siswa']['nama'];
                     $createSiswa->tempat_lahir = $dataPost['Siswa']['tempat_lahir'];
@@ -126,7 +127,19 @@ class SiswaController extends Controller
                     $createSiswa->id_user = $lastInsertedId;
                     $createSiswa->save();
 
-                    $modelAuth = new AuthAssignment;
+                    $lastIdSiswa = Yii::$app->db->getLastInsertID();
+                    $getKelas = Kelas::findOne($dataPost['Siswa']['id_kelas']);
+
+                    $createKelas = new SiswaRwKelas();
+                    $createKelas->id_siswa = $lastIdSiswa;
+                    $createKelas->id_kelas = $dataPost['Siswa']['id_kelas'];
+                    $createKelas->id_tahun_ajaran = $getKelas->id_tahun_ajaran;
+                    $createKelas->nama_kelas = $getKelas->nama_kelas;
+                    $createKelas->id_tingkat = $getKelas->id_tingkat;
+                    $createKelas->id_wali_kelas = $getKelas->id_wali_kelas;
+                    $createKelas->save();
+
+                    $modelAuth = new AuthAssignment();
                     $modelAuth->item_name = 'Siswa';
                     $modelAuth->user_id = $lastInsertedId;
                     $modelAuth->save();

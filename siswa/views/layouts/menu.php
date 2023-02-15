@@ -33,7 +33,7 @@ echo Menu::widget(
             [
                 'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/siswa/riwayat/index" aria-expanded="false">
                 <i class="mdi mdi-calendar"></i>
-                <span class="hide-menu">Riwayat Siswa</span>
+                <span class="hide-menu">Riwayat Kelas</span>
                 </a>',
                 'options' => [
                     'class' => 'sidebar-item'
@@ -41,7 +41,7 @@ echo Menu::widget(
                 'active' => Yii::$app->request->url === Yii::$app->homeUrl
             ],
             [
-                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/siswa/wali/index" aria-expanded="false">
+                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/siswa/siswa-wali/index" aria-expanded="false">
                 <i class="mdi mdi-calendar"></i>
                 <span class="hide-menu">Wali Murid</span>
                 </a>',
