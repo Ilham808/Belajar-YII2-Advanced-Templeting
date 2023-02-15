@@ -14,14 +14,14 @@ echo Menu::widget(
                 <span class="hide-menu">Dashboard</span>
                 </a>',
                 'options' => [
-                	'class' => 'sidebar-item'
+                    'class' => 'sidebar-item'
                 ],
                 'active' => Yii::$app->request->url === Yii::$app->homeUrl
             ],
 
             [
                 'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/siswa/biodata/index" aria-expanded="false">
-                <i class="mdi mdi-calendar"></i>
+                <i class="mdi mdi-account-card-details"></i>
                 <span class="hide-menu">Biodata</span>
                 </a>',
                 'options' => [
@@ -32,7 +32,7 @@ echo Menu::widget(
 
             [
                 'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/siswa/riwayat/index" aria-expanded="false">
-                <i class="mdi mdi-calendar"></i>
+                <i class="mdi mdi-dns"></i>
                 <span class="hide-menu">Riwayat Kelas</span>
                 </a>',
                 'options' => [
@@ -42,11 +42,11 @@ echo Menu::widget(
             ],
             [
                 'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/siswa/siswa-wali/index" aria-expanded="false">
-                <i class="mdi mdi-calendar"></i>
+                <i class="mdi mdi-account-switch"></i>
                 <span class="hide-menu">Wali Murid</span>
                 </a>',
                 'options' => [
-                	'class' => 'sidebar-item'
+                    'class' => 'sidebar-item'
                 ],
                 'active' => Yii::$app->request->url === Yii::$app->homeUrl
             ],

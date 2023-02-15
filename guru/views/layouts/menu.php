@@ -9,7 +9,7 @@ echo Menu::widget(
         ],
         'items' => [
             [
-                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/siswa/site/index" aria-expanded="false">
+                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/guru/site/index" aria-expanded="false">
                 <i class="mdi mdi-view-dashboard"></i>
                 <span class="hide-menu">Dashboard</span>
                 </a>',
@@ -20,9 +20,9 @@ echo Menu::widget(
             ],
 
             [
-                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/siswa/biodata/index" aria-expanded="false">
-                <i class="mdi mdi-calendar"></i>
-                <span class="hide-menu">Biodata</span>
+                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/guru/mata-pelajaran/index" aria-expanded="false">
+                <i class="mdi mdi-book-multiple"></i>
+                <span class="hide-menu">Mata Pelajaran</span>
                 </a>',
                 'options' => [
                     'class' => 'sidebar-item'
@@ -31,9 +31,9 @@ echo Menu::widget(
             ],
 
             [
-                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/siswa/riwayat/index" aria-expanded="false">
-                <i class="mdi mdi-calendar"></i>
-                <span class="hide-menu">Riwayat Kelas</span>
+                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/guru/kelas/index" aria-expanded="false">
+                <i class="mdi mdi-domain"></i>
+                <span class="hide-menu">Seluruh Kelas</span>
                 </a>',
                 'options' => [
                     'class' => 'sidebar-item'
@@ -41,9 +41,9 @@ echo Menu::widget(
                 'active' => Yii::$app->request->url === Yii::$app->homeUrl
             ],
             [
-                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/siswa/siswa-wali/index" aria-expanded="false">
-                <i class="mdi mdi-calendar"></i>
-                <span class="hide-menu">Wali Murid</span>
+                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/guru/siswa-wali/index" aria-expanded="false">
+                <i class="mdi mdi-account-multiple"></i>
+                <span class="hide-menu">List Siswa</span>
                 </a>',
                 'options' => [
                 	'class' => 'sidebar-item'
