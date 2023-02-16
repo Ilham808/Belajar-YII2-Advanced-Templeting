@@ -5,6 +5,8 @@ namespace backend\models;
 use Yii;
 use yii\base\Model;
 use common\models\User;
+use common\models\AuthAssignment;
+use common\models\Siswa;
 
 class BuatAkun extends Model
 {
@@ -40,7 +42,7 @@ class BuatAkun extends Model
      *
      * @return bool whether the creating new account was successful and email was sent
      */
-    public function signup()
+    public function signup($id)
     {
         if (!$this->validate()) {
             return null;
@@ -53,8 +55,19 @@ class BuatAkun extends Model
         $user->status = 10;
         $user->generateAuthKey();
         $user->generateEmailVerificationToken();
+        $user->save();
 
-        return $user->save();
+        $lastInsertedId = Yii::$app->db->getLastInsertID();
+        $createSiswa = Siswa::findOne($id);
+        $createSiswa->id_user = $lastInsertedId;
+        $createSiswa->save();
+
+        $modelAuth = new AuthAssignment();
+        $modelAuth->item_name = 'Siswa';
+        $modelAuth->user_id = $lastInsertedId;
+        $modelAuth->save();
+
+        return true;
     }
 
 }

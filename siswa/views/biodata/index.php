@@ -5,6 +5,8 @@ use kartik\grid\GridView;
 use yii\grid\ActionColumn;
 /* @var $this yii\web\View */
 /* @var $model common\models\MataPelajaran */
+$this->title = 'Biodata';
+$this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="row">
     <div class="col-md-7">

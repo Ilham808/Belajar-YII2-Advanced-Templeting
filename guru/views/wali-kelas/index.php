@@ -7,25 +7,20 @@ use johnitvn\ajaxcrud\CrudAsset;
 use johnitvn\ajaxcrud\BulkButtonWidget;
 
 /* @var $this yii\web\View */
-/* @var $searchModel backend\models\SearchKelas */
+/* @var $searchModel siswa\models\SearchSiswaWali */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Kelas';
+$this->title = 'Wali Kelas';
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
-
 ?>
-<!-- <div class="element-wrapper">
-    <h6 class="element-header">
-            </h6>
-    <div class="element-box"> -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <div id="ajaxCrudDatatable">
-                        <div id="table-responsive">
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div id="ajaxCrudDatatable">
+                    <div id="table-responsive">
                         <?=GridView::widget([
                             'id'=>'crud-datatable',
                             'pager' => [
@@ -35,14 +30,15 @@ CrudAsset::register($this);
                             'dataProvider' => $dataProvider,
                             'filterModel' => $searchModel,
                             'pjax'=>true,
-                            'columns' => require(__DIR__.'/_columns.php'),
-                            'toolbar'=> [
-                            ],          
+                            'columns' => require(__DIR__.'/_columns.php'),         
                             'striped' => true,
                             'condensed' => true,
-                            'responsive' => true,      
+                            'responsive' => true,
+                            'panel' => [
+                                // 'type' => 'primary', 
+                                'heading' => 'Kelas',
+                            ]  
                         ])?>
-                        </div>
                     </div>
                 </div>
             </div>

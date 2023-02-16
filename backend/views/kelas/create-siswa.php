@@ -4,12 +4,13 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Siswa */
+/* @var $model common\models\Kelas */
 
 ?>
 <div class="siswa-create">
-    <?= $this->render('_form', [
+    <?= $this->render('_siswa', [
         'model' => $model,
-        'kelas' => $kelas
+        'siswa' => $siswa,
+        'id'    => $id
     ]) ?>
 </div>

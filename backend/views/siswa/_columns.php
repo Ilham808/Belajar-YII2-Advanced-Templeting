@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Url;
+use yii\helpers\HTML;
 
 return [
     //[
@@ -31,13 +32,32 @@ return [
         'attribute'=>'tanggal_lahir',
     ],
     [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'alamat',
+        'class' => 'kartik\grid\ActionColumn',
+        'header' => 'Akun',
+        'template' => '{btn_add_akun}',
+        'buttons' => [
+            "btn_add_akun" => function ($url, $model, $key) {
+
+                if ($model->id_user == 0) {
+                    return Html::a('Buat Akun', ['add-akun', 'id' => $model->id], [
+                        'class' => 'btn btn-success text-white btn-block',
+                        'role' => 'modal-remote',
+                        'title' => 'Buat Akun',
+                        'data-toggle' => 'tooltip'
+                    ]);
+                }else{
+                    return Html::a('Lihat Akun', ['view-akun', 'id' => $model->id_user], [
+                        'class' => 'btn btn-primary text-white btn-block',
+                        'role' => 'modal-remote',
+                        'title' => 'Lihat Akun',
+                        'data-toggle' => 'tooltip'
+                    ]);
+                }
+                
+            },
+
+        ]
     ],
-    // [
-        // 'class'=>'\kartik\grid\DataColumn',
-        // 'attribute'=>'id_kelas',
-    // ],
     // [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'id_user',
@@ -47,7 +67,7 @@ return [
         'dropdown' => false,
         'vAlign'=>'middle',
         'urlCreator' => function($action, $model, $key, $index) { 
-                return Url::to([$action, 'id' => $model->id]);
+            return Url::to([$action, 'id' => $model->id]);
         },
         'viewOptions'=>['role'=>'modal-remote','title'=>'Lihat','data-toggle'=>'tooltip'],
         'updateOptions'=>['role'=>'modal-remote','title'=>'Ubah', 'data-toggle'=>'tooltip'],
@@ -57,6 +77,6 @@ return [
                           'data-toggle'=>'tooltip',
                           'data-confirm-title'=>'Peringatan',
                           'data-confirm-message'=>'Apakah anda yakin ingin menghapus data ini?'], 
-    ],
+                      ],
 
-];   
+                  ];   

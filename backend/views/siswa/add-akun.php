@@ -7,9 +7,8 @@ use yii\helpers\Html;
 /* @var $model common\models\Siswa */
 
 ?>
-<div class="siswa-create">
-    <?= $this->render('_form', [
-        'model' => $model,
-        'kelas' => $kelas
+<div class="akun-create">
+    <?= $this->render('_akun', [
+        'model' => $model
     ]) ?>
 </div>

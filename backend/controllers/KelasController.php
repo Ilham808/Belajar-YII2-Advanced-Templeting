@@ -4,10 +4,12 @@ namespace backend\controllers;
 
 use Yii;
 use common\models\Kelas;
+use common\models\Siswa;
 use common\models\RefTingkatKelas;
 use common\models\RefJurusan;
 use common\models\RefTahunAjaran;
 use common\models\Guru; 
+use backend\models\ActionSiswaKelas;
 use backend\models\SearchKelas;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -65,17 +67,114 @@ class KelasController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> "Kelas ",
-                    'content'=>$this->renderAjax('view', [
-                        'model' => $this->findModel($id),
-                    ]),
-                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                            Html::a('Ubah',['update','id' => $id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
+                'title'=> "Kelas ",
+                'content'=>$this->renderAjax('view', [
+                    'model' => $this->findModel($id),
+                ]),
+                'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                Html::a('Ubah',['update','id' => $id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+            ];    
         }else{
             return $this->render('view', [
                 'model' => $this->findModel($id),
             ]);
+        }
+    }
+
+    public function actionCreateSiswa($id)
+    {
+        $request = Yii::$app->request;
+        $model = new Siswa();
+        $siswa = Siswa::find()->where(['!=', 'id_kelas', $id])->all();
+        $saveData = new ActionSiswaKelas();
+
+        if($request->isAjax){
+            /*
+            *   Process for ajax request
+            */
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            if($request->isGet){
+                return [
+                    'title'=> "Tambah Siswa ke Kelas",
+                    'content'=>$this->renderAjax('create-siswa', [
+                        'model' => $model,
+                        'siswa' => $siswa,
+                        'id'    => $id
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+
+                ];         
+            }else if($request->post() && $saveData->updateSiswaKelas($request->post())){
+                return [
+                    'title' => "Daftar Siswa",
+                    'content' => $this->renderAjax('list-siswa', [
+                        'model' => Siswa::find()->where(['id_kelas' => $id])->all()
+                    ]),
+                    'footer' => Html::button('Tutup', ['class' => 'btn btn-default float-left', 'data-dismiss' => "modal"]).
+                    Html::a('Tambah Siswa',['create-siswa', 'id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                ];     
+            }else{           
+                return [
+                    'title'=> "Tambah Kelas",
+                    'content'=>$this->renderAjax('create-siswa', [
+                        'model' => $model,
+                        'siswa' => $siswa,
+                        'id'    => $id
+                    ]),
+                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+
+                ];         
+            }
+        }else{
+            /*
+            *   Process for non-ajax request
+            */
+            if ($request->post()) {
+                return $this->redirect(['view', 'id' => $model->id]);
+            } else {
+                return $this->render('create-siswa', [
+                    'model' => $model,
+                    'siswa' => $siswa,
+                    'id'    => $id
+                ]);
+            }
+        }
+    }
+
+    public function actionListSiswa($id)
+    {
+        $request = Yii::$app->request;
+        $model = Siswa::find()->where(['id_kelas' => $id])->all();
+
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'title' => "Daftar Siswa",
+                'content' => $this->renderAjax('list-siswa', [
+                    'model' => $model
+                ]),
+                'options' => [
+                    'class' => 'card-lg'
+                ],
+                'footer' => Html::button('Tutup', ['class' => 'btn btn-default float-left', 'data-dismiss' => "modal"]).
+                Html::a('Tambah Siswa',['create-siswa', 'id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+            ];
+        } else {
+            return $this->render('list-siswa', [
+                'model' => $model
+            ]);
+        }
+    }
+
+    public function actionDeleteSiswa($id_siswa, $id_kelas)
+    {
+        $siswa = Siswa::find()->where(['id' => $id_siswa])->one();
+        $siswa->id_kelas = 0;
+         Yii::$app->response->format = Response::FORMAT_JSON;
+        if($siswa->save()){
+            return $this->redirect(['index']);        
         }
     }
 
@@ -110,8 +209,8 @@ class KelasController extends Controller
                         'tahunAjaran' => $tahunAjaran
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                                Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
-        
+                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 return [
@@ -119,8 +218,8 @@ class KelasController extends Controller
                     'title'=> "Tambah Kelas",
                     'content'=>'<span class="text-success">Create Kelas berhasil</span>',
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                            Html::a('Tambah Lagi',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
-        
+                    Html::a('Tambah Lagi',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
+
                 ];         
             }else{           
                 return [
@@ -133,8 +232,8 @@ class KelasController extends Controller
                         'tahunAjaran' => $tahunAjaran
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                                Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
-        
+                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+
                 ];         
             }
         }else{
@@ -149,7 +248,7 @@ class KelasController extends Controller
                 ]);
             }
         }
-       
+
     }
 
     /**
@@ -184,7 +283,7 @@ class KelasController extends Controller
                         'tahunAjaran' => $tahunAjaran
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                                Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
                 ];         
             }else if($model->load($request->post()) && $model->save()){
                 return [
@@ -198,23 +297,23 @@ class KelasController extends Controller
                         'tahunAjaran' => $tahunAjaran
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                            Html::a('Ubah',['update', 'id' => $model->id],['class'=>'btn btn-primary','role'=>'modal-remote'])
+                    Html::a('Ubah',['update', 'id' => $model->id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
-                 return [
-                    'title'=> "Ubah Kelas ",
-                    'content'=>$this->renderAjax('update', [
-                        'model' => $model,
-                        'jurusan' => $jurusan,
-                        'tingkatKelas' => $tingkatKelas,
-                        'guru' => $guru,
-                        'tahunAjaran' => $tahunAjaran
-                    ]),
-                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                                Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
-                ];        
-            }
-        }else{
+               return [
+                'title'=> "Ubah Kelas ",
+                'content'=>$this->renderAjax('update', [
+                    'model' => $model,
+                    'jurusan' => $jurusan,
+                    'tingkatKelas' => $tingkatKelas,
+                    'guru' => $guru,
+                    'tahunAjaran' => $tahunAjaran
+                ]),
+                'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
+                Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
+            ];        
+        }
+    }else{
             /*
             *   Process for non-ajax request
             */
@@ -263,8 +362,8 @@ class KelasController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionBulkdelete()
-    {        
+     public function actionBulkdelete()
+     {        
         $request = Yii::$app->request;
         $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
         foreach ( $pks as $pk ) {
@@ -284,7 +383,7 @@ class KelasController extends Controller
             */
             return $this->redirect(['index']);
         }
-       
+
     }
 
     /**

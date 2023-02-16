@@ -34,9 +34,7 @@ class Siswa extends \yii\db\ActiveRecord
         return [
             [['tanggal_lahir'], 'safe'],
             [['alamat'], 'string'],
-            [['id_kelas', 'id_user'], 'required'],
-            [['id_kelas', 'id_user'], 'default', 'value' => null],
-            [['id_kelas', 'id_user'], 'integer'],
+            [['id_kelas', 'id_user'], 'default', 'value' => 0],
             [['nis', 'tempat_lahir'], 'string', 'max' => 20],
             [['nama'], 'string', 'max' => 50],
         ];

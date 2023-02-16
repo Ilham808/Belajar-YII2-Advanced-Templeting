@@ -68,7 +68,7 @@ CrudAsset::register($this);
                             ]
                         ])?>
                         </div>
-                    </div>
+                    </div> 
                 </div>
             </div>
         </div>

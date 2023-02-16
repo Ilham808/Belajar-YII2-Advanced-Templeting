@@ -78,7 +78,6 @@ class MataPelajaranController extends Controller
             ]);
         }
     }
-
     /**
      * Creates a new MataPelajaran model.
      * For ajax request will return json object

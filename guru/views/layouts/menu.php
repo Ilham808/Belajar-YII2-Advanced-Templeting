@@ -41,9 +41,9 @@ echo Menu::widget(
                 'active' => Yii::$app->request->url === Yii::$app->homeUrl
             ],
             [
-                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/guru/siswa-wali/index" aria-expanded="false">
+                'template' => '<a class="sidebar-link waves-effect waves-dark sidebar-link" href="/guru/wali-kelas/index" aria-expanded="false">
                 <i class="mdi mdi-account-multiple"></i>
-                <span class="hide-menu">List Siswa</span>
+                <span class="hide-menu">Wali Kelas</span>
                 </a>',
                 'options' => [
                 	'class' => 'sidebar-item'

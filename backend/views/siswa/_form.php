@@ -19,36 +19,17 @@ use kartik\date\DatePicker;
 
     <?= $form->field($model, 'tempat_lahir')->textInput(['maxlength' => true]) ?>
 
-    <?php
-    echo '<label class="form-label">Tanggal Lahir</label>';
-    echo DatePicker::widget([
-        'name' => 'tanggal_lahir',
+    <?= $form->field($model, 'tanggal_lahir')->widget(DatePicker::classname(),[
         'type' => DatePicker::TYPE_COMPONENT_PREPEND,
-        'value' => '',
+        'value' => $model->tanggal_lahir,
         'pluginOptions' => [
             'autoclose' => true,
             'format' => 'dd-M-yyyy'
         ]
-    ]);
+    ])->label('Tanggal Lahir');
     ?>
     <br>
-
-    <?= $form->field($modelUser, 'email')->label('Email') ?>
-
     <?= $form->field($model, 'alamat')->textarea(['rows' => 3]) ?>
-
-    <?php 
-    $dataKelas=ArrayHelper::map($kelas,'id','nama_kelas');
-    echo $form->field($model, 'id_kelas')->dropDownList(
-        $dataKelas,
-        ['prompt'=>'- Pilih Salah Satu -']
-    )->label('Kelas');
-    ?>
-
-    <hr>
-    <?= $form->field($modelUser, 'username')->textInput()->label('Username') ?>
-    <?= $form->field($modelUser, 'password')->passwordInput()->label('Password') ?>
-
 
     <?php if (!Yii::$app->request->isAjax){ ?>
         <div class="form-group">
