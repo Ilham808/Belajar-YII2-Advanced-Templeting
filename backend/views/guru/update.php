@@ -8,8 +8,7 @@ use yii\helpers\Html;
 <div class="guru-update">
 
     <?= $this->render('_form', [
-        'model' => $model,
-        'modelUser' => $modelUser
+        'model' => $model
     ]) ?>
 
 </div>

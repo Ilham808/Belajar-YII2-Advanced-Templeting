@@ -40,7 +40,7 @@ class SearchSiswaWali extends SiswaWali
      */
     public function search($params)
     {
-        $query = SiswaWali::find();
+        $query = SiswaWali::find()->where(['id_siswa' => Yii::$app->user->identity->id]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

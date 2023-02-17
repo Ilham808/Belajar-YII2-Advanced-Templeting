@@ -29,7 +29,15 @@ use yii\grid\ActionColumn;
                                     <td><?= $arr->refTahunAjaran->tahun_ajaran ?></td>
                                     <td><?= $arr->nama_kelas ?></td>
                                     <td><?= $arr->refTingkatKelas->tingkat_kelas ?></td>
-                                    <td><?= $arr->guru->nama_guru ?></td>
+                                    <td>
+                                        <?php 
+                                        if ($arr->guru == NULL) {
+                                            echo "-";
+                                        }else{
+                                            echo $arr->guru->nama_guru;
+                                        }
+                                        ?>
+                                    </td>
                                 </tr>
                             <?php } ?>
                         </table>

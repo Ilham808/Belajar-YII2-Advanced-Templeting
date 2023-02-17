@@ -27,9 +27,7 @@ class Guru extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id_user'], 'required'],
-            [['id_user'], 'default', 'value' => null],
-            [['id_user'], 'integer'],
+            [['id_user'], 'default', 'value' => 0],
             [['nama_guru'], 'string', 'max' => 50],
         ];
     }

@@ -97,7 +97,7 @@ class SiswaController extends Controller
                     Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
 
                 ];         
-            }else if($model->load($request->post()) && $model->signup($id)){
+            }else if($model->load($request->post()) && $model->signup($id, "Siswa")){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
                     'title'=> "Tambah Akun Siswa",
@@ -120,7 +120,7 @@ class SiswaController extends Controller
             /*
             *   Process for non-ajax request
             */
-            if ($model->load($request->post()) && $model->signup()) {
+            if ($model->load($request->post()) && $model->signup($id, "Siswa")) {
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $this->render('create', [

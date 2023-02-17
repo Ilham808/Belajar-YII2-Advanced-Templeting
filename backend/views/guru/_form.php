@@ -13,11 +13,6 @@ use yii\bootstrap4\ActiveForm;
     <?php $form = ActiveForm::begin(); ?>
 
     <?= $form->field($model, 'nama_guru')->textInput(['maxlength' => true]) ?>
-    <?= $form->field($modelUser, 'email')->label('Email') ?>
-    <hr>
-    <?= $form->field($modelUser, 'username')->textInput()->label('Username') ?>
-    <?= $form->field($modelUser, 'password')->passwordInput()->label('Password') ?>
-
   
 	<?php if (!Yii::$app->request->isAjax){ ?>
 	  	<div class="form-group">
