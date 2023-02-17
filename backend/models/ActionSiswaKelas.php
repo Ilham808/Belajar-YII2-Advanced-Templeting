@@ -33,4 +33,4 @@ class ActionSiswaKelas extends Model
 
 		return TRUE;
 	}
-}
+} 

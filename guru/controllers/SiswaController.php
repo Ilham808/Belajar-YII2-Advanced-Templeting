@@ -1,16 +1,10 @@
 <?php
 
-namespace backend\controllers;
+namespace guru\controllers;
 
 use Yii;
-use common\models\Kelas;
 use common\models\Siswa;
-use common\models\RefTingkatKelas;
-use common\models\RefJurusan;
-use common\models\RefTahunAjaran;
-use common\models\Guru; 
-use backend\models\ActionSiswaKelas;
-use backend\models\SearchKelas;
+use guru\models\SearchSiswa;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -20,9 +14,9 @@ use yii\helpers\ArrayHelper;
 
 
 /**
- * KelasController implements the CRUD actions for Kelas model.
+ * SiswaController implements the CRUD actions for Siswa model.
  */
-class KelasController extends Controller
+class SiswaController extends Controller
 {
     /**
      * @inheritdoc
@@ -41,23 +35,39 @@ class KelasController extends Controller
     }
 
     /**
-     * Lists all Kelas models.
+     * Lists all Siswa models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id = null)
     {    
-        $searchModel = new SearchKelas();
+        $request = Yii::$app->request;
+        $searchModel = new SearchSiswa();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andFilterWhere(['id_kelas' => $id]);
+        if ($request->isAjax) {
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'title' => "Daftar Siswa",
+                'content' => $this->renderAjax('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]),
+                'footer' => Html::button('Tutup', ['class' => 'btn btn-default float-left', 'data-dismiss' => "modal"])
+            ];
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        } else {
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+            ]);
+        }
+
+        
     }
 
 
     /**
-     * Displays a single Kelas model.
+     * Displays a single Siswa model.
      * @param integer $id
      * @return mixed
      */
@@ -67,7 +77,7 @@ class KelasController extends Controller
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                'title'=> "Kelas ",
+                'title'=> "Siswa ",
                 'content'=>$this->renderAjax('view', [
                     'model' => $this->findModel($id),
                 ]),
@@ -81,106 +91,8 @@ class KelasController extends Controller
         }
     }
 
-    public function actionCreateSiswa($id)
-    {
-        $request = Yii::$app->request;
-        $model = new Siswa();
-        $siswa = Siswa::find()->where(['!=', 'id_kelas', $id])->all();
-        $saveData = new ActionSiswaKelas();
-
-        if($request->isAjax){
-            /*
-            *   Process for ajax request
-            */
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
-                return [
-                    'title'=> "Tambah Siswa ke Kelas",
-                    'content'=>$this->renderAjax('create-siswa', [
-                        'model' => $model,
-                        'siswa' => $siswa,
-                        'id'    => $id
-                    ]),
-                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
-
-                ];         
-            }else if($request->post() && $saveData->updateSiswaKelas($request->post())){
-                
-                return [
-                    'title' => "Daftar Siswa",
-                    'content' => $this->renderAjax('list-siswa', [
-                        'model' => Siswa::find()->where(['id_kelas' => $id])->all()
-                    ]),
-                    'footer' => Html::button('Tutup', ['class' => 'btn btn-default float-left', 'data-dismiss' => "modal"]).
-                    Html::a('Tambah Siswa',['create-siswa', 'id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];     
-            }else{           
-                return [
-                    'title'=> "Tambah Kelas",
-                    'content'=>$this->renderAjax('create-siswa', [
-                        'model' => $model,
-                        'siswa' => $siswa,
-                        'id'    => $id
-                    ]),
-                    'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
-                    Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
-
-                ];         
-            }
-        }else{
-            /*
-            *   Process for non-ajax request
-            */
-            if ($request->post()) {
-                return $this->redirect(['view', 'id' => $model->id]);
-            } else {
-                return $this->render('create-siswa', [
-                    'model' => $model,
-                    'siswa' => $siswa,
-                    'id'    => $id
-                ]);
-            }
-        }
-    }
-
-    public function actionListSiswa($id)
-    {
-        $request = Yii::$app->request;
-        $model = Siswa::find()->where(['id_kelas' => $id])->all();
-
-        if ($request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return [
-                'title' => "Daftar Siswa",
-                'content' => $this->renderAjax('list-siswa', [
-                    'model' => $model
-                ]),
-                'options' => [
-                    'class' => 'card-lg'
-                ],
-                'footer' => Html::button('Tutup', ['class' => 'btn btn-default float-left', 'data-dismiss' => "modal"]).
-                Html::a('Tambah Siswa',['create-siswa', 'id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-            ];
-        } else {
-            return $this->render('list-siswa', [
-                'model' => $model
-            ]);
-        }
-    }
-
-    public function actionDeleteSiswa($id_siswa, $id_kelas)
-    {
-        $siswa = Siswa::find()->where(['id' => $id_siswa])->one();
-        $siswa->id_kelas = 0;
-         Yii::$app->response->format = Response::FORMAT_JSON;
-        if($siswa->save()){
-            return $this->redirect(['index']);        
-        }
-    }
-
     /**
-     * Creates a new Kelas model.
+     * Creates a new Siswa model.
      * For ajax request will return json object
      * and for non-ajax request if creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
@@ -188,11 +100,7 @@ class KelasController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new Kelas();  
-        $jurusan = RefJurusan::find()->all();
-        $tingkatKelas = RefTingkatKelas::find()->all();
-        $guru = Guru::find()->all();
-        $tahunAjaran = RefTahunAjaran::find()->all();
+        $model = new Siswa();  
 
         if($request->isAjax){
             /*
@@ -201,13 +109,9 @@ class KelasController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Tambah Kelas",
+                    'title'=> "Tambah Siswa",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
-                        'jurusan' => $jurusan,
-                        'tingkatKelas' => $tingkatKelas,
-                        'guru' => $guru,
-                        'tahunAjaran' => $tahunAjaran
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -216,21 +120,17 @@ class KelasController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Tambah Kelas",
-                    'content'=>'<span class="text-success">Create Kelas berhasil</span>',
+                    'title'=> "Tambah Siswa",
+                    'content'=>'<span class="text-success">Create Siswa berhasil</span>',
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::a('Tambah Lagi',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
 
                 ];         
             }else{           
                 return [
-                    'title'=> "Tambah Kelas",
+                    'title'=> "Tambah Siswa",
                     'content'=>$this->renderAjax('create', [
                         'model' => $model,
-                        'jurusan' => $jurusan,
-                        'tingkatKelas' => $tingkatKelas,
-                        'guru' => $guru,
-                        'tahunAjaran' => $tahunAjaran
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -253,7 +153,7 @@ class KelasController extends Controller
     }
 
     /**
-     * Updates an existing Kelas model.
+     * Updates an existing Siswa model.
      * For ajax request will return json object
      * and for non-ajax request if update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
@@ -262,11 +162,7 @@ class KelasController extends Controller
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
-        $model = $this->findModel($id); 
-        $jurusan = RefJurusan::find()->all();
-        $tingkatKelas = RefTingkatKelas::find()->all();
-        $guru = Guru::find()->all();
-        $tahunAjaran = RefTahunAjaran::find()->all();      
+        $model = $this->findModel($id);       
 
         if($request->isAjax){
             /*
@@ -275,13 +171,9 @@ class KelasController extends Controller
             Yii::$app->response->format = Response::FORMAT_JSON;
             if($request->isGet){
                 return [
-                    'title'=> "Ubah Kelas",
+                    'title'=> "Ubah Siswa",
                     'content'=>$this->renderAjax('update', [
                         'model' => $model,
-                        'jurusan' => $jurusan,
-                        'tingkatKelas' => $tingkatKelas,
-                        'guru' => $guru,
-                        'tahunAjaran' => $tahunAjaran
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -289,26 +181,18 @@ class KelasController extends Controller
             }else if($model->load($request->post()) && $model->save()){
                 return [
                     'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Kelas ",
+                    'title'=> "Siswa ",
                     'content'=>$this->renderAjax('view', [
                         'model' => $model,
-                        'jurusan' => $jurusan,
-                        'tingkatKelas' => $tingkatKelas,
-                        'guru' => $guru,
-                        'tahunAjaran' => $tahunAjaran
                     ]),
                     'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                     Html::a('Ubah',['update', 'id' => $model->id],['class'=>'btn btn-primary','role'=>'modal-remote'])
                 ];    
             }else{
                return [
-                'title'=> "Ubah Kelas ",
+                'title'=> "Ubah Siswa ",
                 'content'=>$this->renderAjax('update', [
                     'model' => $model,
-                    'jurusan' => $jurusan,
-                    'tingkatKelas' => $tingkatKelas,
-                    'guru' => $guru,
-                    'tahunAjaran' => $tahunAjaran
                 ]),
                 'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"]).
                 Html::button('Simpan',['class'=>'btn btn-primary','type'=>"submit"])
@@ -329,7 +213,7 @@ class KelasController extends Controller
     }
 
     /**
-     * Delete an existing Kelas model.
+     * Delete an existing Siswa model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -357,7 +241,7 @@ class KelasController extends Controller
     }
 
      /**
-     * Delete multiple existing Kelas model.
+     * Delete multiple existing Siswa model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
@@ -388,15 +272,15 @@ class KelasController extends Controller
     }
 
     /**
-     * Finds the Kelas model based on its primary key value.
+     * Finds the Siswa model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Kelas the loaded model
+     * @return Siswa the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Kelas::findOne($id)) !== null) {
+        if (($model = Siswa::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

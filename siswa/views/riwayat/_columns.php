@@ -1,6 +1,5 @@
 <?php
 use yii\helpers\Url;
-use yii\helpers\Html;
 
 return [
     //[
@@ -31,24 +30,5 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'guru.nama_guru',
     ],
-    [
-        'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'refJurusan.jurusan',
-    ],
-    [
-        'class' => 'kartik\grid\ActionColumn',
-        'header' => 'Daftar Siswa',
-        'template' => '{btn_detail}',
-        'buttons' => [
-            "btn_detail" => function ($url, $model, $key) {
-                return Html::a('Lihat', ['/siswa/index', 'id' => $model->id], [
-                    'class' => 'btn btn-success text-white btn-block',
-                    'role' => 'modal-remote',
-                    'title' => 'Lihat',
-                    'data-toggle' => 'tooltip'
-                ]);
-            },
 
-        ]
-    ],
 ];   

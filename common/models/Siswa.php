@@ -48,7 +48,7 @@ class Siswa extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'nis' => 'Nis',
-            'nama' => 'Nama',
+            'nama' => 'Nama Siswa',
             'tempat_lahir' => 'Tempat Lahir',
             'tanggal_lahir' => 'Tanggal Lahir',
             'alamat' => 'Alamat',
