@@ -46,7 +46,7 @@ class GuruController extends Controller
     {    
         $request = Yii::$app->request;
         $searchModel = new SearchGuru();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams); 
         if($request->isAjax){
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
