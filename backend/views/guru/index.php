@@ -14,8 +14,10 @@ $this->title = 'Gurus';
 $this->params['breadcrumbs'][] = $this->title;
 
 CrudAsset::register($this);
-
-?>
+$this->registerJS('
+    $.pjax.defaults.timeout = false;
+    ');
+    ?>
 <!-- <div class="element-wrapper">
     <h6 class="element-header">
             </h6>
@@ -24,7 +26,6 @@ CrudAsset::register($this);
                     <div class="col-12">
                         <div id="ajaxCrudDatatable">
                             <div id="table-responsive">
-                                <?php Pjax::begin();?>
                                 <?=GridView::widget([
                                     'id'=>'crud-datatable',
                                     'pager' => [
@@ -66,7 +67,6 @@ CrudAsset::register($this);
                                     '<div class="clearfix"></div>',
                                 ]
                             ])?>
-                            <?php Pjax::end(); ?>
                         </div>
                     </div>
                 </div>
@@ -74,6 +74,7 @@ CrudAsset::register($this);
         </div>
         <?php Modal::begin([
             "id"=>"ajaxCrudModal",
+            "size" => "modal-lg",
     "footer"=>"",// always need it for jquery plugin
 ])?>
 <?php Modal::end(); ?>

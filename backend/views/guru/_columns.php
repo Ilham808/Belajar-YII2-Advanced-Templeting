@@ -2,7 +2,7 @@
 use yii\helpers\Url;
 use yii\helpers\HTML;
 
-return [
+return  [
     //[
         //'class' => 'kartik\grid\CheckboxColumn',
         //'width' => '20px',
@@ -21,10 +21,55 @@ return [
     ],
     [
         'class' => 'kartik\grid\ActionColumn',
+        'header' => 'Status',
+        'visible' => $id_mapel == null ? FALSE:TRUE,
+        'template' => '{btn_add_mapel}',
+        'buttons' => [
+            "btn_add_mapel" => function ($url, $model, $key) use ($id_mapel) {
+
+                if (!Yii::$app->request->isAjax){
+                    if ($model->cekStatusMapel($id_mapel) == FALSE) {
+                        return Html::a('Pilih', ['add-mapel', 'id_mapel' => $id_mapel, 'id_guru' => $model->id], [
+                            'class' => 'btn btn-outline-success btn-block',
+                            'title' => 'Pilih',
+                            'data-toggle' => 'tooltip'
+                        ]);
+                    }else{
+                        return Html::a('Terpilih', ['add-mapel', 'id_mapel' => $id_mapel, 'id_guru' => $model->id], [
+                            'class' => 'btn btn-success text-white btn-block',
+                            'title' => 'Terpilih',
+                            'data-toggle' => 'tooltip'
+                        ]);
+                    }
+                }else{
+                    if ($model->cekStatusMapel($id_mapel) == FALSE) {
+                        return Html::a('Pilih', ['add-mapel', 'id_mapel' => $id_mapel, 'id_guru' => $model->id], [
+                            'class' => 'btn btn-outline-success btn-block',
+                            'role' => 'modal-remote',
+                            'title' => 'Pilih',
+                            'data-toggle' => 'tooltip'
+                        ]);
+                    }else{
+                        return Html::a('Terpilih', ['add-mapel', 'id_mapel' => $id_mapel, 'id_guru' => $model->id], [
+                            'class' => 'btn btn-success text-white btn-block',
+                            'role' => 'modal-remote',
+                            'title' => 'Terpilih',
+                            'data-toggle' => 'tooltip'
+                        ]);
+                    }
+                }
+            },
+
+        ]
+    ],
+    [
+        'class' => 'kartik\grid\ActionColumn',
         'header' => 'Akun',
+        'visible' => $id_mapel == null ? TRUE:FALSE,
         'template' => '{btn_add_akun}',
         'buttons' => [
             "btn_add_akun" => function ($url, $model, $key) {
+
 
                 if ($model->id_user == 0) {
                     return Html::a('Buat Akun', ['add-akun', 'id' => $model->id], [
@@ -50,8 +95,9 @@ return [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
         'vAlign'=>'middle',
+        'visible' => $id_mapel == null ? TRUE:FALSE,
         'urlCreator' => function($action, $model, $key, $index) { 
-                return Url::to([$action, 'id' => $model->id]);
+            return Url::to([$action, 'id' => $model->id]);
         },
         'viewOptions'=>['role'=>'modal-remote','title'=>'Lihat','data-toggle'=>'tooltip'],
         'updateOptions'=>['role'=>'modal-remote','title'=>'Ubah', 'data-toggle'=>'tooltip'],
@@ -61,6 +107,6 @@ return [
                           'data-toggle'=>'tooltip',
                           'data-confirm-title'=>'Peringatan',
                           'data-confirm-message'=>'Apakah anda yakin ingin menghapus data ini?'], 
-    ],
+                      ],
 
-];   
+                  ];  

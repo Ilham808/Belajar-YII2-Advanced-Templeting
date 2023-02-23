@@ -45,6 +45,16 @@ class GuruMataPelajaran extends \yii\db\ActiveRecord
         ];
     }
 
+    public function setStatusGuruMapel()
+    {
+
+        if ($model=GuruMataPelajaran::find()->where(['id_guru' => $this->id_guru, 'id_mata_pelajaran' => $this->id_mata_pelajaran])->one()) {
+            $model->delete();
+        }else{
+            $this->save();
+        }
+    }
+
     public function getRefGuru()
     {
         return $this->hasOne(Guru::className(), ['id' => 'id_guru']);

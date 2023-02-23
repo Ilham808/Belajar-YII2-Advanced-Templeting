@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use common\models\Guru;
 use common\models\User;
+use common\models\GuruMataPelajaran;
 use common\models\AuthAssignment;
 use backend\models\SearchGuru;
 use backend\models\BuatAkun;
@@ -41,15 +42,29 @@ class GuruController extends Controller
      * Lists all Guru models.
      * @return mixed
      */
-    public function actionIndex()
+    public function actionIndex($id_mapel = null)
     {    
+        $request = Yii::$app->request;
         $searchModel = new SearchGuru();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'title'=> "Pilih Guru",
+                'content'=>$this->renderAjax('index', [
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'id_mapel' => $id_mapel
+                ]),
+                'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
+            ];
+        }else{
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'id_mapel' => $id_mapel
+            ]);
+        }
     }
 
 
@@ -366,6 +381,38 @@ class GuruController extends Controller
             return $this->redirect(['index']);
         }
 
+    }
+
+
+    public function actionAddMapel($id_mapel, $id_guru)
+    {
+        $searchModel = new SearchGuru();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        $request = Yii::$app->request;
+
+        $model = new GuruMataPelajaran();
+        $model->id_mata_pelajaran = $id_mapel;
+        $model->id_guru = $id_guru ;
+        $model->setStatusGuruMapel();
+        
+        if($request->isAjax){
+            Yii::$app->response->format = Response::FORMAT_JSON;
+            return [
+                'forceReload'=>'#crud-datatable-mapel-guru-pjax',
+                'title'=> "Pilih Guru",
+                'content'=>$this->renderAjax('index', [
+                    'dataProvider' => $dataProvider,
+                    'searchModel' => $searchModel,
+                    'id_mapel' => $id_mapel
+                ]),
+                'footer'=> Html::button('Tutup',['class'=>'btn btn-default float-left','data-dismiss'=>"modal"])
+            ];
+        }else{
+            return [
+                'forceReload'=>'#crud-datatable'
+            ];
+        }
     }
 
     /**

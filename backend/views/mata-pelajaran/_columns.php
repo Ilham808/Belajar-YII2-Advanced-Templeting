@@ -1,5 +1,6 @@
 <?php
 use yii\helpers\Url;
+use yii\helpers\HTML;
 
 return [
     //[
@@ -26,6 +27,21 @@ return [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'refJurusan.jurusan',
     ],
+    [
+        'class' => 'kartik\grid\ActionColumn',
+        'header' => 'Guru Pengajar',
+        'template' => '{btn_detail_guru}',
+        'buttons' => [
+            "btn_detail_guru" => function ($url, $model, $key) {
+                return Html::a('Lihat', ['/mapel-guru/index', 'id_mapel' => $model->id], [
+                    'class' => 'btn btn-success text-white btn-block',
+                    'title' => 'Lihat',
+                    'data-toggle' => 'tooltip'
+                ]);
+            },
+
+        ]
+    ], 
     [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
