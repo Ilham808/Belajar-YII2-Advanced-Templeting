@@ -14,18 +14,27 @@ return [
         // [
         // 'class'=>'\kartik\grid\DataColumn',
         // 'attribute'=>'id',
-    // ],
+    // ], 
     [
         'class'=>'\kartik\grid\DataColumn',
         'attribute'=>'mata_pelajaran',
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'refTingkatKelas.tingkat_kelas',
+        'attribute'=>'tingkat_kelas',
+        'value' => function ($model) {
+            return $model->refTingkatKelas->tingkat_kelas;
+        },
+        'label' => 'Tingkat Kelas'
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'refJurusan.jurusan',
+        'attribute' => "jurusan",
+        'value' => function ($model) {
+            return $model->refJurusan->jurusan;
+        },
+        'label' => 'Jurusan'
+
     ],
     [
         'class' => 'kartik\grid\ActionColumn',
@@ -47,7 +56,7 @@ return [
         'dropdown' => false,
         'vAlign'=>'middle',
         'urlCreator' => function($action, $model, $key, $index) { 
-                return Url::to([$action, 'id' => $model->id]);
+            return Url::to([$action, 'id' => $model->id]);
         },
         'viewOptions'=>['role'=>'modal-remote','title'=>'Lihat','data-toggle'=>'tooltip', 'class' => 'text-info'],
         'updateOptions'=>['role'=>'modal-remote','title'=>'Ubah', 'data-toggle'=>'tooltip', 'class' => 'text-warning'],
@@ -59,6 +68,6 @@ return [
                           'data-confirm-message'=>'Apakah anda yakin ingin menghapus data ini?',
                           'class' => 'text-danger'
                       ], 
-    ],
+                  ],
 
-];   
+              ];   

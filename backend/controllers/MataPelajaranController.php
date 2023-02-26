@@ -16,7 +16,7 @@ use yii\helpers\ArrayHelper;
 
 
 /**
- * MataPelajaranController implements the CRUD actions for MataPelajaran model.
+ * MataPelajaranController implements the CRUD actions for MataPelajaran model.,
  */
 class MataPelajaranController extends Controller
 {

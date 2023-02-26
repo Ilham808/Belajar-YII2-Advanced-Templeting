@@ -12,14 +12,17 @@ use common\models\MataPelajaran;
  */
 class SearchMataPelajaran extends MataPelajaran
 {
-    /**
+    /** 
      * @inheritdoc
      */
+    public $jurusan;
+    public $tingkat_kelas;
+
     public function rules()
     {
         return [
             [['id', 'id_tingkat_kelas', 'id_jurusan'], 'integer'],
-            [['mata_pelajaran'], 'safe'],
+            [['mata_pelajaran', 'jurusan', 'tingkat_kelas'], 'safe'],
         ];
     }
 
@@ -41,7 +44,9 @@ class SearchMataPelajaran extends MataPelajaran
      */
     public function search($params)
     {
-        $query = MataPelajaran::find();
+        $query = MataPelajaran::find()
+        ->leftJoin('ref_tingkat_kelas', 'ref_tingkat_kelas.id = mata_pelajaran.id_tingkat_kelas')
+        ->leftJoin('ref_jurusan', 'ref_jurusan.id = mata_pelajaran.id_jurusan');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -59,9 +64,13 @@ class SearchMataPelajaran extends MataPelajaran
             'id' => $this->id,
             'id_tingkat_kelas' => $this->id_tingkat_kelas,
             'id_jurusan' => $this->id_jurusan,
+            'jurusan' => $this->jurusan,
+            'tingkat_kelas' => $this->tingkat_kelas,
         ]);
 
-        $query->andFilterWhere(['like', 'mata_pelajaran', $this->mata_pelajaran]);
+        $query->andFilterWhere(['like', 'mata_pelajaran.mata_pelajaran', $this->mata_pelajaran]);
+        $query->andFilterWhere(['like', 'ref_jurusan.jurusan', $this->jurusan]);
+        $query->andFilterWhere(['like', 'ref_tingkat_kelas.tingkat_kelas', $this->tingkat_kelas]);
 
         return $dataProvider;
     }
