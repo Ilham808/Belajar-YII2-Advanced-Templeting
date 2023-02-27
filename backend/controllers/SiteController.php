@@ -2,6 +2,9 @@
 
 namespace backend\controllers;
 
+use common\models\Siswa;
+use common\models\Guru;
+use common\models\Kelas;
 use common\models\LoginForm;
 use Yii;
 use yii\filters\VerbFilter;
@@ -62,7 +65,14 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $countSiswa = Siswa::find()->count();
+        $countGuru = Guru::find()->count();
+        $countKelas = Kelas::find()->count();
+        return $this->render('index', [
+            'countSiswa' => $countSiswa,
+            'countGuru' => $countGuru,
+            'countKelas' => $countKelas
+        ]);
     }
 
     /**

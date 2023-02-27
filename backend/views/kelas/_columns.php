@@ -17,7 +17,11 @@ return [
     // ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'refTahunAjaran.tahun_ajaran',
+        'attribute'=>'tahun_ajaran',
+        'value' => function ($model) {
+            return $model->refTahunAjaran->tahun_ajaran;
+        },
+        'label' => 'Tahun Ajaran'
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
@@ -25,15 +29,29 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'refTingkatKelas.tingkat_kelas',
+        'attribute'=>'tingkat_kelas',
+        'value' => function ($model) {
+            return $model->refTingkatKelas->tingkat_kelas;
+        },
+        'label' => 'Tingkat Kelas'
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'guru.nama_guru',
+        'attribute'=>'nama_guru',
+        'value' => function ($model) {
+            if ($model->guru != null) {
+                return $model->guru->nama_guru;
+            }
+        },
+        'label' => 'Nama Guru'
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'refJurusan.jurusan',
+        'attribute'=>'jurusan',
+        'value' => function ($model) {
+            return $model->refJurusan->jurusan;
+        },
+        'label' => 'Jurusan'
     ],
     [
         'class' => 'kartik\grid\ActionColumn',
@@ -56,7 +74,7 @@ return [
         'dropdown' => false,
         'vAlign'=>'middle', 
         'urlCreator' => function($action, $model, $key, $index) { 
-                return Url::to([$action, 'id' => $model->id]);
+            return Url::to([$action, 'id' => $model->id]);
         },
         'viewOptions'=>['role'=>'modal-remote','title'=>'Lihat','data-toggle'=>'tooltip'],
         'updateOptions'=>['role'=>'modal-remote','title'=>'Ubah', 'data-toggle'=>'tooltip'],
@@ -66,6 +84,6 @@ return [
                           'data-toggle'=>'tooltip',
                           'data-confirm-title'=>'Peringatan',
                           'data-confirm-message'=>'Apakah anda yakin ingin menghapus data ini?'], 
-    ],
+                      ],
 
-];   
+                  ];   
