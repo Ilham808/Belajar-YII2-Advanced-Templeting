@@ -44,10 +44,12 @@ class MataPelajaranController extends Controller
     {    
         $searchModel = new SearchMataPelajaran();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $getTingkatKelas = RefTingkatKelas::find()->all();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'getTingkatKelas' => $getTingkatKelas
         ]);
     }
 

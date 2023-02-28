@@ -1,6 +1,8 @@
 <?php
 use yii\helpers\Url;
 use yii\helpers\HTML;
+use yii\helpers\ArrayHelper;
+use kartik\grid\GridView;
 
 return [
     //[
@@ -21,7 +23,16 @@ return [
     ],
     [
         'class'=>'\kartik\grid\DataColumn',
-        'attribute'=>'tingkat_kelas',
+        'attribute'=>'id_tingkat_kelas',
+        'filter' => ArrayHelper::map($getTingkatKelas, 'id', 'tingkat_kelas'),
+        'filterType' => GridView::FILTER_SELECT2,
+        'filterWidgetOptions' => [
+            'options' => ['prompt' => ''],
+            'pluginOptions' => [
+                'allowClear' => true,
+                'width'=>'200px'
+            ],
+        ],
         'value' => function ($model) {
             return $model->refTingkatKelas->tingkat_kelas;
         },

@@ -65,12 +65,10 @@ class SearchMataPelajaran extends MataPelajaran
             'id_tingkat_kelas' => $this->id_tingkat_kelas,
             'id_jurusan' => $this->id_jurusan,
             'jurusan' => $this->jurusan,
-            'tingkat_kelas' => $this->tingkat_kelas,
         ]);
 
         $query->andFilterWhere(['like', 'mata_pelajaran.mata_pelajaran', $this->mata_pelajaran]);
         $query->andFilterWhere(['like', 'ref_jurusan.jurusan', $this->jurusan]);
-        $query->andFilterWhere(['like', 'ref_tingkat_kelas.tingkat_kelas', $this->tingkat_kelas]);
 
         return $dataProvider;
     }
